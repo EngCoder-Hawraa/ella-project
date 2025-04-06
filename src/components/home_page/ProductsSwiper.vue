@@ -89,9 +89,12 @@
                 alt=""
                 width="30"
                 height="30"
-                style="
-                  border-radius: 50%;
-                  border: 1px solid rgb(135, 135, 135);
+                style="border-radius: 50%; border: 1px solid rgb(135, 135, 135)"
+                @click="
+                  $router.push({
+                    name: 'products_details', // ✅ corrected name
+                    params: { productId: item.id },
+                  })
                 "
             /></v-btn>
           </v-btn-toggle>
@@ -101,6 +104,12 @@
               class="py-2 px-7"
               style="text-transform: none; border-radius: 30px"
               variant="outlined"
+              @click="
+                $router.push({
+                  name: 'products_details', // ✅ corrected name
+                  params: { productId: item.id },
+                })
+              "
               >Choose</v-btn
             >
           </div>
