@@ -2,7 +2,18 @@
   <div class="new-products pt-12">
     <div class="title px-5 d-flex align-center justify-space-between">
       <h2 style="font-weight: 900; font-size: 30px">New Products</h2>
-      <a href="#" class="text-black" style="font-size: 14px">Shop All</a>
+      <router-link
+        class="text-black"
+        style="font-size: 14px"
+        :to="{
+          name: 'products_category',
+          query: {
+            title: categories[index].title,
+            category: categories[index].route,
+          },
+        }"
+        >Shop All</router-link
+      >
     </div>
     <v-container fluid>
       <v-row>
@@ -27,7 +38,7 @@
               <v-card elevation="0" class="pb-5">
                 <v-hover v-slot="{ isHovering, props }">
                   <div
-                    class="img-parent"
+                    class="img-parent position-relative"
                     style="height: 160px; overflow: hidden"
                   >
                     <img
@@ -43,6 +54,26 @@
                       alt=""
                       v-bind="props"
                     />
+                    <v-btn
+                      density="compact"
+                      width="60"
+                      height="30"
+                      variant="outlined"
+                      class="bg-white quick-view-btn"
+                      style="
+                        text-transform: none;
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                        border-radius: 30px;
+                        font-size: 12px;
+                        transition: 0.2s all ease-in-out;
+                        opacity: 0;
+                      "
+                      @click="openQuickView(item)"
+                      >Quick View</v-btn
+                    >
                   </div>
                 </v-hover>
                 <v-card-text class="pl-0 pb-1">
@@ -76,7 +107,7 @@
                     }}</span
                   >
                 </v-card-text>
-                <v-btn-toggle v-model="showenItem[item.title]">
+                <v-btn-toggle v-model="showenItem[item.title]" mandatory>
                   <v-btn
                     v-for="(pic, i) in item.images"
                     :value="pic"
@@ -104,7 +135,7 @@
                     @click="
                       $router.push({
                         name: 'products_details', // ✅ corrected name
-                        params: { productId: item.id },
+                        query: { productId: item.id },
                       })
                     "
                   >
@@ -125,16 +156,36 @@
     </v-container>
   </div>
 </template>
+<!--Options API-->
 <script>
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { Pagination } from "swiper";
 import { VSkeletonLoader } from "vuetify/components";
+import { productsModule } from "@/stores/products";
+import { mapState } from "pinia";
 
 export default {
+  inject: ["Emitter"],
+  methods: {
+    openQuickView(product) {
+      this.Emitter.emit("openQuickView", product);
+    },
+  },
+  computed: {
+    ...mapState(productsModule, ["categories"]),
+  },
   props: {
     products: {
       type: Array,
-      required: true,
+    },
+    title: {
+      type: String,
+    },
+    titleColor: {
+      type: String,
+    },
+    index: {
+      type: Number,
     },
   },
   components: {
@@ -155,4 +206,12 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.new-products {
+  .img-parent:hover {
+    .quick-view-btn {
+      opacity: 1 !important;
+    }
+  }
+}
+</style>

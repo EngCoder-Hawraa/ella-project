@@ -93,7 +93,8 @@
     </v-container>
   </div>
 </template>
-<script setup></script>
+<!--Options API-->
+<script></script>
 <style lang="scss">
 .shop-withus {
   background-image: url("../../assets/images/why-shop-with-us-banner.webp");

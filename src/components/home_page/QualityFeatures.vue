@@ -31,6 +31,7 @@
     </v-container>
   </div>
 </template>
+<!--Options API-->
 <script>
 export default {
   data: () => ({

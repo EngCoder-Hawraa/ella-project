@@ -22,7 +22,8 @@
     </div>
   </div>
 </template>
-<script setup></script>
+<!--Options API-->
+<script></script>
 <style scoped lang="scss">
 .banner {
   .parent {

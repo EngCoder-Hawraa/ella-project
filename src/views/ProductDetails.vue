@@ -106,6 +106,15 @@
               />
               <v-icon size="22" @click="quantity++">mdi-plus</v-icon>
             </div>
+            <v-card-text class="pl-0">
+              Subtotal: ${{
+                Math.ceil(
+                  singleProduct.price -
+                    singleProduct.price *
+                      (singleProduct.discountPercentage / 100)
+                ) * quantity
+              }}
+            </v-card-text>
             <v-card-actions class="mt-7 w-100 px-0">
               <v-btn
                 variant="outlined"
@@ -117,6 +126,8 @@
                 class="w-75 text-white"
                 density="compact"
                 height="50"
+                @click="addToCart(singleProduct)"
+                :loading="btnLoading"
                 >Add To Cart</v-btn
               >
             </v-card-actions>
@@ -126,17 +137,31 @@
     </v-container>
   </div>
 </template>
+<!--Options API-->
 <script>
 import { productsModule } from "@/stores/products";
 import { mapActions, mapState } from "pinia";
 import { VSkeletonLoader } from "vuetify/components";
+import { cartStore } from "@/stores/cart";
 
 export default {
+  inject: ["Emitter"],
   computed: {
     ...mapState(productsModule, ["singleProduct"]),
   },
   methods: {
     ...mapActions(productsModule, ["getSingleProduct"]),
+    ...mapState(cartStore, ["addItem"]),
+    addToCart(item) {
+      item.quantity = this.quantity;
+      this.btnLoading = true;
+      setTimeout(() => {
+        this.btnLoading = false;
+        this.addItem(item);
+        this.Emitter.emit("openCart");
+        this.Emitter.emit("showMsg", item.title);
+      }, 1000);
+    },
   },
   components: {
     VSkeletonLoader,
@@ -145,72 +170,12 @@ export default {
     loading: false,
     tab: "",
     quantity: 1,
-    product: {
-      id: 1,
-      title: "Essence Mascara Lash Princess",
-      description:
-        "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
-      category: "beauty",
-      price: 9.99,
-      discountPercentage: 7.17,
-      rating: 4.94,
-      stock: 5,
-      tags: ["beauty", "mascara"],
-      brand: "Essence",
-      sku: "RCH45Q1A",
-      weight: 2,
-      dimensions: {
-        width: 23.17,
-        height: 14.43,
-        depth: 28.01,
-      },
-      warrantyInformation: "1 month warranty",
-      shippingInformation: "Ships in 1 month",
-      availabilityStatus: "Low Stock",
-      reviews: [
-        {
-          rating: 2,
-          comment: "Very unhappy with my purchase!",
-          date: "2024-05-23T08:56:21.618Z",
-          reviewerName: "John Doe",
-          reviewerEmail: "john.doe@x.dummyjson.com",
-        },
-        {
-          rating: 2,
-          comment: "Not as described!",
-          date: "2024-05-23T08:56:21.618Z",
-          reviewerName: "Nolan Gonzalez",
-          reviewerEmail: "nolan.gonzalez@x.dummyjson.com",
-        },
-        {
-          rating: 5,
-          comment: "Very satisfied!",
-          date: "2024-05-23T08:56:21.618Z",
-          reviewerName: "Scarlett Wright",
-          reviewerEmail: "scarlett.wright@x.dummyjson.com",
-        },
-      ],
-      returnPolicy: "30 days return policy",
-      minimumOrderQuantity: 24,
-      meta: {
-        createdAt: "2024-05-23T08:56:21.618Z",
-        updatedAt: "2024-05-23T08:56:21.618Z",
-        barcode: "9164035109868",
-        qrCode: "https://assets.dummyjson.com/public/qr-code.png",
-      },
-      images: [
-        "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png",
-        "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/2.png",
-        "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/3.png",
-        "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/4.png",
-      ],
-      thumbnail:
-        "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
-    },
+    product: {},
+    btnLoading: false,
   }),
   async beforeMount() {
     this.loading = true;
-    await this.getSingleProduct(this.$route.params.productId);
+    await this.getSingleProduct(this.$route.query.productId);
     this.loading = false;
   },
 };

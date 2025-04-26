@@ -33,7 +33,7 @@ export const productsModule = defineStore("productsModule", {
       await axios
         .get("https://dummyjson.com/products")
         .then((res) => {
-          console.log(res.data.products);
+          // console.log(res.data.products);
           this.newProducts = res.data.products.filter(
             (el) => el.category === "beauty"
           );

@@ -3,19 +3,32 @@
     <UpperBanner />
     <TheFeatures />
     <TopOffers />
+
     <ProductsComponent
+      v-if="flashDeals && flashDeals.length"
       :products="flashDeals"
       title="Flash Deals"
       titleColor="red"
+      :index="0"
     />
+
     <TopCats />
-    <NewProducts :products="newProducts" />
+    <NewProducts
+      v-if="newProducts && newProducts.length"
+      :products="newProducts"
+      :index="0"
+    />
+
     <QualityFeatures />
+
     <ProductsComponent
+      v-if="fragrances && fragrances.length"
       :products="fragrances"
       title="Top Fragrances"
       titleColor="#404040"
+      :index="1"
     />
+
     <v-container fluid>
       <v-row>
         <v-col cols="6" class="pr-5">
@@ -34,11 +47,23 @@
         </v-col>
       </v-row>
     </v-container>
+
     <ProductsComponent
+      v-if="furniture && furniture.length"
       :products="furniture"
       title="Top Furniture"
       titleColor="#404040"
+      :index="2"
     />
+
+    <ProductsComponent
+      v-if="groceries && groceries.length"
+      :products="groceries"
+      title="Groceries"
+      titleColor="#404040"
+      :index="3"
+    />
+
     <WhyShopwithus />
   </div>
 </template>
@@ -53,6 +78,7 @@ import TopCats from "@/components/home_page/TopCategories.vue";
 import NewProducts from "@/components/home_page/NewProducts.vue";
 import QualityFeatures from "@/components/home_page/QualityFeatures.vue";
 import WhyShopwithus from "@/components/home_page/WhyShopwithus.vue";
+
 import { productsModule } from "@/stores/products";
 import { mapActions, mapState } from "pinia";
 
@@ -74,6 +100,7 @@ export default {
       "newProducts",
       "fragrances",
       "furniture",
+      "groceries",
     ]),
   },
   methods: {

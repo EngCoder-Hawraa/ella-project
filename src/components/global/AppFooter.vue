@@ -19,7 +19,7 @@
                 <router-link
                   :to="{
                     name: 'products_category',
-                    params: { category: category.route, title: category.title },
+                    query: { category: category.route, title: category.title },
                   }"
                   style="color: rgb(71, 71, 71); text-decoration: none"
                   >{{ category.title }}</router-link

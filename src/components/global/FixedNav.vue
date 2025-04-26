@@ -21,7 +21,7 @@
                 <router-link
                   :to="{
                     name: 'products_category',
-                    params: { category: category.route, title: category.title },
+                    query: { category: category.route, title: category.title },
                   }"
                   style="color: white; text-decoration: none"
                   >{{ category.title }}</router-link
@@ -42,14 +42,17 @@
             </svg>
             <div
               class="wishlists d-flex flex-column align-center"
-              style="cursor: pointer"
+              :style="`cursor: pointer;pointer-events:${
+                $route.name == 'cart_page' ? 'none' : 'unset'
+              }`"
               @click="openCart"
             >
               <v-badge
                 location="right top"
-                content="2"
                 color="red"
                 offset-x="-14"
+                :content="cartItems.length"
+                v-if="cartItems.length"
               ></v-badge>
               <svg
                 viewBox="0 0 1024 1024"
@@ -76,14 +79,17 @@
     </v-app-bar>
   </div>
 </template>
+<!--Options API-->
 <script>
 import { productsModule } from "@/stores/products";
 import { mapState } from "pinia";
+import { cartStore } from "@/stores/cart";
 
 export default {
   inject: ["Emitter"],
   computed: {
     ...mapState(productsModule, ["categories"]),
+    ...mapState(cartStore, ["cartItems"]),
   },
   methods: {
     openCart() {

@@ -7,7 +7,18 @@
       >
         {{ title }}
       </h2>
-      <a href="#" class="text-black" style="font-size: 14px">Shop All</a>
+      <router-link
+        class="text-black"
+        style="font-size: 14px"
+        :to="{
+          name: 'products_category',
+          query: {
+            title: categories[index].title,
+            category: categories[index].route,
+          },
+        }"
+        >Shop All</router-link
+      >
     </div>
     <v-container fluid v-if="!products.length">
       <v-row>
@@ -29,12 +40,20 @@
       :space-between="35"
       class="pb-9 px-5"
       :navigation="{ prevIcon: '.swiper-prev', nextIcon: '.swiper-next' }"
-      :autoplay="{ delay: 3000 }"
+      :autoplay="{
+        delay: 3000,
+        pauseOnMouseEnter: true,
+        disableOnInteraction: false,
+      }"
+      :loop="true"
     >
       <swiper-slide v-for="item in products" :key="item.id">
         <v-card elevation="0" class="pb-5">
           <v-hover v-slot="{ isHovering, props }">
-            <div class="img-parent" style="height: 200px; overflow: hidden">
+            <div
+              class="img-parent position-relative"
+              style="height: 200px; overflow: hidden"
+            >
               <img
                 :src="
                   showenItem[item.title]
@@ -48,6 +67,26 @@
                 alt=""
                 v-bind="props"
               />
+              <v-btn
+                density="compact"
+                width="60"
+                height="30"
+                variant="outlined"
+                class="bg-white quick-view-btn"
+                style="
+                  text-transform: none;
+                  position: absolute;
+                  left: 50%;
+                  top: 50%;
+                  transform: translate(-50%, -50%);
+                  border-radius: 30px;
+                  font-size: 12px;
+                  transition: 0.2s all ease-in-out;
+                  opacity: 0;
+                "
+                @click="openQuickView(item)"
+                >Quick View</v-btn
+              >
             </div>
           </v-hover>
           <v-card-text class="pl-0 pb-1">
@@ -76,7 +115,7 @@
               }}</span
             >
           </v-card-text>
-          <v-btn-toggle v-model="showenItem[item.title]">
+          <v-btn-toggle v-model="showenItem[item.title]" mandatory>
             <v-btn
               v-for="(pic, i) in item.images"
               :value="pic"
@@ -93,7 +132,7 @@
                 @click="
                   $router.push({
                     name: 'products_details', // ✅ corrected name
-                    params: { productId: item.id },
+                    query: { productId: item.id },
                   })
                 "
             /></v-btn>
@@ -107,7 +146,7 @@
               @click="
                 $router.push({
                   name: 'products_details', // ✅ corrected name
-                  params: { productId: item.id },
+                  query: { productId: item.id },
                 })
               "
               >Choose</v-btn
@@ -126,8 +165,23 @@
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { Pagination, Navigation, Autoplay } from "swiper";
 import { VSkeletonLoader } from "vuetify/components";
+// import topCategories from "@/components/home_page/TopCategories.vue";
+import { productsModule } from "@/stores/products";
+import { mapState } from "pinia";
 
 export default {
+  computed: {
+    // topCategories() {
+    //   return topCategories;
+    // },
+    ...mapState(productsModule, ["categories"]),
+  },
+  inject: ["Emitter"],
+  methods: {
+    openQuickView(product) {
+      this.Emitter.emit("openQuickView", product);
+    },
+  },
   props: {
     products: {
       type: Array,
@@ -137,6 +191,9 @@ export default {
     },
     titleColor: {
       type: String,
+    },
+    index: {
+      type: Number,
     },
   },
   setup() {
@@ -176,6 +233,12 @@ export default {
   .swiper-pagination-bullet {
     width: 10px;
     height: 10px;
+  }
+
+  .img-parent:hover {
+    .quick-view-btn {
+      opacity: 1 !important;
+    }
   }
 }
 </style>

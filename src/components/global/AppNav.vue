@@ -98,14 +98,17 @@
               </div>
               <div
                 class="wishlists d-flex flex-column align-center"
-                style="cursor: pointer"
+                :style="`cursor: pointer;pointer-events:${
+                  $route.name == 'cart_page' ? 'none' : 'unset'
+                }`"
                 @click="openCart"
               >
                 <v-badge
                   location="right top"
-                  content="2"
                   color="#205dc2"
                   offset-x="-14"
+                  :content="cartItems.length"
+                  v-if="cartItems.length"
                 ></v-badge>
                 <svg
                   viewBox="0 0 1024 1024"
@@ -140,7 +143,7 @@
                 <router-link
                   :to="{
                     name: 'products_category',
-                    params: { category: category.route, title: category.title },
+                    query: { category: category.route, title: category.title },
                   }"
                   style="color: white; text-decoration: none"
                   >{{ category.title }}</router-link
@@ -181,7 +184,7 @@
               >
               <v-icon>mdi-chevron-down</v-icon>
               <v-menu activator="#language-btn">
-                <v-list v-model:selected="selectedLang">
+                <v-list v-model:selected="selectedLang" mandatory>
                   <v-list-item
                     v-for="lang in langs"
                     :key="lang.lang"
@@ -208,6 +211,7 @@
 <script>
 import { productsModule } from "@/stores/products";
 import { mapState } from "pinia";
+import { cartStore } from "@/stores/cart";
 
 export default {
   inject: ["Emitter"],
@@ -218,6 +222,7 @@ export default {
   },
   computed: {
     ...mapState(productsModule, ["categories"]),
+    ...mapState(cartStore, ["cartItems"]),
   },
   data: () => ({
     selectedLang: [
