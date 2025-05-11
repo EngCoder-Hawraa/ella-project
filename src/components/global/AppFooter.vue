@@ -3,7 +3,7 @@
     <v-footer :app="true" color="grey-lighten-4" absolute class="pt-14">
       <v-container fluid class="px-0">
         <v-row>
-          <v-col cols="3">
+          <v-col cols="12" sm="6" md="4" lg="3">
             <v-card elevation="0" color="transparent">
               <v-card-title
                 class="px-0"
@@ -27,7 +27,7 @@
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" sm="6" md="4" lg="3">
             <v-card elevation="0" color="transparent">
               <v-card-title
                 class="px-0"
@@ -57,7 +57,7 @@
               >
             </v-card>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" sm="6" md="4" lg="3">
             <v-card elevation="0" color="transparent">
               <v-card-title
                 class="px-0"
@@ -87,7 +87,7 @@
               >
             </v-card>
           </v-col>
-          <v-col cols="3" class="pt-8">
+          <v-col cols="12" sm="6" md="4" lg="3" class="pt-8">
             <v-card elevation="0" color="transparent">
               <img
                 src="@/assets/images/footer-logo.webp"
@@ -95,7 +95,10 @@
                 @click="$router.push({ name: 'home' })"
                 style="cursor: pointer"
               />
-              <v-card-text class="px-0 d-flex justify-center" style="gap: 16px">
+              <v-card-text
+                class="px-0 d-flex justify-start justify-sm-center"
+                style="gap: 16px"
+              >
                 <span class="pt-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -290,14 +293,17 @@
           <!--          </v-col>-->
         </v-row>
         <v-row class="pt-7 bg-white">
-          <v-col cols="6">
+          <v-col cols="12" md="6" class="text-center">
             <p style="color: rgb(127, 127, 127); font-size: 14px">
               &copy; {{ new Date().getFullYear() }} Ella Demo. All Rights
               Reserved. Powered By Ella
             </p>
           </v-col>
-          <v-col cols="6">
-            <div class="master-cards d-flex justify-end" style="gap: 10px">
+          <v-col cols="12" md="6" class="cards_img">
+            <div
+              class="master-cards d-flex justify-center justify-md-end"
+              style="gap: 10px"
+            >
               <span v-for="(svg, i) in svgs" :key="i" v-html="svg"></span>
             </div>
           </v-col>
@@ -327,4 +333,11 @@ export default {
   }),
 };
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+// Media Queries
+@media (max-width: 767px) {
+  .cards_img {
+    width: 90%;
+  }
+}
+</style>

@@ -2,11 +2,14 @@
   <div class="checkout">
     <v-container fluid class="ma-0 pa-0">
       <v-row>
-        <v-col cols="7">
-          <v-card class="w-100" color="white" elevation="0">
-            <v-card-title
-              class="font-weight-bold py-0"
-              style="padding: 60px 40px 0px 120px"
+        <v-col cols="12" md="6" lg="7" class="order-1 order-md-0">
+          <v-card
+            class="w-100 checkout-left"
+            color="white"
+            elevation="0"
+            style="padding: 60px 40px 0px 120px"
+          >
+            <v-card-title class="font-weight-bold py-0"
               >new-ella-demo</v-card-title
             >
             <v-breadcrumbs
@@ -215,13 +218,15 @@
             >
           </v-card>
         </v-col>
-        <v-col cols="5">
+        <v-col cols="12" md="6" lg="5">
           <v-card
             color="grey-lighten-3"
             elevation="0"
             width="100%"
             height="100%"
+            min-height="400"
             style="padding: 60px 120px 0px 40px"
+            class="checkout-right"
           >
             <v-card
               elevation="0"
@@ -311,4 +316,16 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+// Media Queries
+@media (max-width: 1280px) {
+  .checkout-left {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+  }
+  .checkout-right {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+  }
+}
+</style>

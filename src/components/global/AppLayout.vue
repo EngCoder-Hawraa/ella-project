@@ -1,8 +1,8 @@
 <template>
   <div class="layout">
     <v-layout class="position-relative">
-      <cart-drawer />
-      <MenuDrawer />
+      <cart-drawer :windowWidth="windowWidth" />
+      <MenuDrawer :windowWidth="windowWidth" />
       <v-main
         :style="{
           paddingTop:

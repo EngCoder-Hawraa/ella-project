@@ -45,6 +45,7 @@
         pauseOnMouseEnter: true,
         disableOnInteraction: false,
       }"
+      :breakpoints="breakpoints"
       :loop="true"
     >
       <swiper-slide v-for="item in products" :key="item.id">
@@ -208,6 +209,20 @@ export default {
   },
   data: () => ({
     showenItem: {},
+    breakpoints: {
+      0: {
+        slidesPerView: 1,
+      },
+      580: {
+        slidesPerView: 2,
+      },
+      767: {
+        slidesPerView: 3,
+      },
+      990: {
+        slidesPerView: 4,
+      },
+    },
   }),
 };
 </script>
@@ -238,6 +253,20 @@ export default {
   .img-parent:hover {
     .quick-view-btn {
       opacity: 1 !important;
+    }
+  }
+}
+
+// Media Queries
+@media (max-width: 580px) {
+  .products-swiper {
+    .img-parent {
+      height: 300px !important;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      top: 60%;
     }
   }
 }

@@ -3,7 +3,7 @@
     <v-navigation-drawer
       temporary
       v-model="drawer"
-      width="370"
+      :width="windowWidth <= 767 ? windowWidth / 2 : 370"
       class="px-5 pt-0 cart-drawer"
     >
       <v-card class="px-0" elevation="0">
@@ -24,16 +24,23 @@
               })
             "
           >
-            <v-list-item-title>{{ cat.title }}</v-list-item-title>
+            <v-list-item-title class="nav-link">{{
+              cat.title
+            }}</v-list-item-title>
           </v-list-item>
           <v-list-group>
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" class="px-0">
-                <v-list-item-title>Languages</v-list-item-title>
+                <v-list-item-title class="nav-link"
+                  >Languages</v-list-item-title
+                >
               </v-list-item>
             </template>
             <v-list-item>
-              <v-list-item-title class="d-flex align-center" style="gap: 7px">
+              <v-list-item-title
+                class="d-flex align-center nav-link"
+                style="gap: 7px"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   version="1.1"
@@ -110,7 +117,10 @@
                 English</v-list-item-title
               > </v-list-item
             ><v-list-item>
-              <v-list-item-title class="d-flex align-center" style="gap: 7px">
+              <v-list-item-title
+                class="d-flex align-center nav-link"
+                style="gap: 7px"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   version="1.1"
@@ -153,6 +163,11 @@ export default {
       drawer: false,
     };
   },
+  props: {
+    windowWidth: {
+      type: Number,
+    },
+  },
   computed: {
     ...mapState(productsModule, ["categories"]),
   },
@@ -164,4 +179,11 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+// Media Queries
+@media (max-width: 580px) {
+  .nav-link {
+    font-size: 12px;
+  }
+}
+</style>
